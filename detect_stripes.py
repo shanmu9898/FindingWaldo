@@ -155,9 +155,8 @@ def detect_stripes(img):
 
                     image_list.append(rgb_img[j:j+sw_h, i:i+sw_w])
 
-    for image in image_list:
-        imshow(image)
-        show()
+
+    return image_list
 
 
 
