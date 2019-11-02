@@ -118,7 +118,7 @@ def train(path, height, width):
     print("Accuracy Cross Validtion scores for DT are ")
     print(accuracyScoresDT)
     accuracyScoresRF = cross_val_score(modelRandomForest, data, labels, cv=kfold, scoring = 'f1_macro')
-    print("Accuracy Cross Validtion scores for DT are ")
+    print("Accuracy Cross Validtion scores for RF are ")
     print(accuracyScoresRF)
 
     print("Shuffling being done before final fitting classifiers on all data")
@@ -138,6 +138,6 @@ def train(path, height, width):
     return classifiers
 
 if __name__ == "__main__":
-   classifiers = train("/Users/Bumblebee/Desktop/Y4S1/CS4243/GroupProjects/FindingWaldo/datasets/faces", 120, 100)
+   classifiers = train("/Users/Bumblebee/Desktop/Y4S1/CS4243/GroupProjects/FindingWaldo/datasets/faces", 90, 60)
    print("FINAL DONE")
 
