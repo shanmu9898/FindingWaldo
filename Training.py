@@ -18,10 +18,10 @@ from sklearn.utils import shuffle
 def train(path, height, width):
     data = []
     labels = []
-    waldo_paths = list(paths.list_images(path + "/waldo/train"))
-    wenda_paths = list(paths.list_images(path + "/wenda/train"))
-    wizard_paths = list(paths.list_images(path + "/wizard/train"))
-    neg_paths = list(paths.list_images(path + "/neg/train"))
+    waldo_paths = list(paths.list_images(path + "/waldo"))
+    wenda_paths = list(paths.list_images(path + "/wenda"))
+    wizard_paths = list(paths.list_images(path + "/wizard"))
+    neg_paths = list(paths.list_images(path + "/neg"))
     print("Processing Waldo for training")
     for (i, waldo_path) in enumerate(waldo_paths):  # load training image
         image = cv2.imread(waldo_path)
@@ -30,13 +30,14 @@ def train(path, height, width):
         # resize
         train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, 1), cv2.flip(train_image, -1))
+        train_image_list = (train_image, cv2.flip(train_image, 0))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
             # extract features from train_image and add to list of features
             features, hog_image = hog(train_image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
                                       visualize=True, multichannel=False)
+
             data.append(features)
             labels.append(1)
 
@@ -48,13 +49,14 @@ def train(path, height, width):
         # resize
         train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, 1), cv2.flip(train_image, -1))
+        train_image_list = (train_image, cv2.flip(train_image, 0))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
             # extract features from train_image and add to list of features
             features, hog_image = hog(train_image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
                                       visualize=True, multichannel=False)
+
             data.append(features)
             labels.append(2)
 
@@ -66,7 +68,7 @@ def train(path, height, width):
         # resize
         train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, 1), cv2.flip(train_image, -1))
+        train_image_list = (train_image, cv2.flip(train_image, 0))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
@@ -84,7 +86,7 @@ def train(path, height, width):
         # resize
         train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, 1), cv2.flip(train_image, -1))
+        train_image_list = (train_image, cv2.flip(train_image, 0))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
@@ -109,13 +111,13 @@ def train(path, height, width):
 
     print("Printing CrossValidation Scores of each of them")
     kfold = KFold(n_splits=5, random_state=13, shuffle=True)
-    accuracyScoresSVC = cross_val_score(modelSVCLinear, train, labels, cv=kfold, scoring = 'accuracy')
+    accuracyScoresSVC = cross_val_score(modelSVCLinear, data, labels, cv=kfold, scoring = 'f1_macro')
     print("Accuracy Cross Validtion scores for SVC are ")
     print(accuracyScoresSVC)
-    accuracyScoresDT = cross_val_score(modelDecisiontree, train, labels, cv=kfold, scoring = 'accuracy')
+    accuracyScoresDT = cross_val_score(modelDecisiontree, data, labels, cv=kfold, scoring = 'f1_macro')
     print("Accuracy Cross Validtion scores for DT are ")
     print(accuracyScoresDT)
-    accuracyScoresRF = cross_val_score(modelRandomForest, train, labels, cv=kfold, scoring = 'accuracy')
+    accuracyScoresRF = cross_val_score(modelRandomForest, data, labels, cv=kfold, scoring = 'f1_macro')
     print("Accuracy Cross Validtion scores for DT are ")
     print(accuracyScoresRF)
 
@@ -127,7 +129,7 @@ def train(path, height, width):
     print("DT being fit on all data, labels")
     modelDecisiontree.fit(data,labels)
     print("RF being fit on all data, labels")
-    modelRandomForest.fit(train, labels)
+    modelRandomForest.fit(data, labels)
 
     print("Creating a classifier list")
     classifiers = [modelSVCLinear, modelDecisiontree, modelRandomForest]
@@ -135,6 +137,7 @@ def train(path, height, width):
     print("Done!")
     return classifiers
 
-
-
+if __name__ == "__main__":
+   classifiers = train("/Users/Bumblebee/Desktop/Y4S1/CS4243/GroupProjects/FindingWaldo/datasets/faces", 120, 100)
+   print("FINAL DONE")
 
