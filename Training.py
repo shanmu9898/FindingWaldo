@@ -27,14 +27,14 @@ def train(path, height, width):
         # convert to grayscale
         train_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # resize
-        train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
+        train_image = cv2.resize(train_image, (width, height), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0))
+        train_image_list = (train_image, cv2.flip(train_image, 0),cv2.flip(train_image, -1), cv2.flip(train_image, 1))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
             # extract features from train_image and add to list of features
-            features, hog_image = hog(train_image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+            features, hog_image = hog(train_image, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                       visualize=True, multichannel=False)
 
             data.append(features)
@@ -46,14 +46,14 @@ def train(path, height, width):
         # convert to grayscale
         train_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # resize
-        train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
+        train_image = cv2.resize(train_image, (width, height), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0))
+        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, -1), cv2.flip(train_image, 1))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
             # extract features from train_image and add to list of features
-            features, hog_image = hog(train_image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+            features, hog_image = hog(train_image, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                       visualize=True, multichannel=False)
 
             data.append(features)
@@ -65,14 +65,14 @@ def train(path, height, width):
         # convert to grayscale
         train_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # resize
-        train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
+        train_image = cv2.resize(train_image, (width, height), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0))
+        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, -1), cv2.flip(train_image, 1))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
             # extract features from train_image and add to list of features
-            features, hog_image = hog(train_image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+            features, hog_image = hog(train_image, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                       visualize=True, multichannel=False)
             data.append(features)
             labels.append(3)
@@ -83,14 +83,14 @@ def train(path, height, width):
         # convert to grayscale
         train_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         # resize
-        train_image = cv2.resize(train_image, (height, width), interpolation=cv2.INTER_AREA)
+        train_image = cv2.resize(train_image, (width, height), interpolation=cv2.INTER_AREA)
         # put the train_image into a list called train_image_list
-        train_image_list = (train_image, cv2.flip(train_image, 0))
+        train_image_list = (train_image, cv2.flip(train_image, 0), cv2.flip(train_image, -1), cv2.flip(train_image, 1))
 
         # loop for train_image in train_image_list
         for train_image in train_image_list:
             # extract features from train_image and add to list of features
-            features, hog_image = hog(train_image, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+            features, hog_image = hog(train_image, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                       visualize=True, multichannel=False)
             data.append(features)
             labels.append(4)
@@ -109,19 +109,19 @@ def train(path, height, width):
 
 
     print("Printing CrossValidation Scores of each of them")
-    kfold = KFold(n_splits=5, random_state=13, shuffle=True)
-    accuracyScoresSVC = cross_val_score(modelSVCLinear, data, labels, cv=kfold, scoring = 'f1_macro')
-    print("Accuracy Cross Validtion scores for SVC are ")
-    print(accuracyScoresSVC)
-    accuracyScoresDT = cross_val_score(modelDecisiontree, data, labels, cv=kfold, scoring = 'f1_macro')
-    print("Accuracy Cross Validtion scores for DT are ")
-    print(accuracyScoresDT)
-    accuracyScoresRF = cross_val_score(modelRandomForest, data, labels, cv=kfold, scoring = 'f1_macro')
-    print("Accuracy Cross Validtion scores for RF are ")
-    print(accuracyScoresRF)
+    # kfold = KFold(n_splits=5, random_state=13, shuffle=True)
+    # accuracyScoresSVC = cross_val_score(modelSVCLinear, data, labels, cv=kfold, scoring = 'f1_macro')
+    # print("Accuracy Cross Validtion scores for SVC are ")
+    # print(accuracyScoresSVC)
+    # accuracyScoresDT = cross_val_score(modelDecisiontree, data, labels, cv=kfold, scoring = 'f1_macro')
+    # print("Accuracy Cross Validtion scores for DT are ")
+    # print(accuracyScoresDT)
+    # accuracyScoresRF = cross_val_score(modelRandomForest, data, labels, cv=kfold, scoring = 'f1_macro')
+    # print("Accuracy Cross Validtion scores for RF are ")
+    # print(accuracyScoresRF)
 
     print("Shuffling being done before final fitting classifiers on all data")
-    data, labels = shuffle(data, labels)
+    # data, labels = shuffle(data, labels)
     print("Finally fitting being done for all the classifiers")
     print("SVC being fit on all data, labels")
     modelSVCLinear.fit(data, labels)

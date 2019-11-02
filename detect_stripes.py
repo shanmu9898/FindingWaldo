@@ -90,7 +90,7 @@ def find_shirt(rgb, red_img, white_img):
 
 def detect_stripes(img):
 
-    og = cv2.imread("./datasets/JPEGImages/001.jpg")
+    og = img
     rgb_img = cv2.cvtColor(og, cv2.COLOR_BGR2RGB)
 
     toErase = copy.deepcopy(rgb_img)
@@ -142,18 +142,22 @@ def detect_stripes(img):
     imshow(toErase)
     show()
 
-    sw_h = 200
-    sw_w = 100
+    sw_h = 250
+    sw_w = 250
 
     image_list = []
 
     for i in range(0, height-sw_h, sw_h):
         for j in range(0, width-sw_w, sw_w):
+
+            waldo_detected = False
             for k in range(len(coordinates)):
                 if coordinates[k][0] >= i and coordinates[k][0] <= i + sw_h\
                         and coordinates[k][1] >= j and coordinates[k][1] <= j + sw_w:
+                    waldo_detected = True
 
-                    image_list.append(rgb_img[j:j+sw_h, i:i+sw_w])
+            if waldo_detected:
+                image_list.append([i,j])
 
 
     return image_list
