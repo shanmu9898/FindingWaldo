@@ -26,9 +26,9 @@ def slide(img, window_h, window_w, classifier):
             features, hog_image = hog(window, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
                                       visualize=True, multichannel=False)
 
-            prediction = classifier.predict([hog_image])
+            prediction = classifier.predict([hog_image])[0]
 
-            if prediction != "waldo" or prediction != "wenda" or prediction != "wizard":
+            if prediction != 1 or prediction != 2 or prediction != 3:
                 toErase[i:i+window_h, j:j+window_w] *= 0
 
             else:

@@ -1,5 +1,4 @@
 from __future__ import print_function
-from sklearn.feature_extraction.image import extract_patches_2d
 from imutils import paths
 from scipy import io
 import numpy as np
