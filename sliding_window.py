@@ -8,6 +8,7 @@ import copy
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 
+from feature_extraction import get_hog_feature
 
 def slide(img, window_h, window_w, classifier):
 
@@ -25,8 +26,10 @@ def slide(img, window_h, window_w, classifier):
         for j in range(0, width - window_w, step_size):
             window = img[i:i+window_h, j:j+window_w]
 
-            features, hog_image = hog(window, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
-                                      visualize=True, multichannel=False)
+            # features, hog_image = hog(window, orientations=8, pixels_per_cell=(16, 16), cells_per_block=(1, 1),
+            #                           visualize=True, multichannel=False)
+
+            features, _ = get_hog_feature(image=window)
 
             prediction = classifier.predict([features])[0]
 

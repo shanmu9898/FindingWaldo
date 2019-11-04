@@ -1,14 +1,17 @@
 import cv2
 from skimage.feature import hog
 
-def get_hog_feature(path, img_height=128, img_width=128, orientations=9, pixels_per_cell=(8, 8), 
+def get_hog_feature(path=None, image=None, img_height=128, img_width=128, orientations=9, pixels_per_cell=(8, 8), 
                     cells_per_block=(2, 2), multichannel=True):
-    img = cv2.imread(path)
+    if path is not None:
+        img = cv2.imread(path)
 
-    print(path)
-    
-    if not multichannel:
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        print(path)
+
+        if not multichannel:
+            img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    else:
+        img = image
 
     resized_img = cv2.resize(img, (img_width, img_height))
 

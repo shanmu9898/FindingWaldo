@@ -166,9 +166,3 @@ def detect_stripes(img):
                 coordinate_list.append([i,j])
 
     return image_list, coordinate_list
-
-
-
-
-
-
