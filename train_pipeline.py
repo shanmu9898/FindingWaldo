@@ -18,14 +18,16 @@ OTHER_NON_FACE_PATH = os.path.join('.', 'datasets', 'faces', 'non_face')
 WALDO_BIG_FACE_PATH = os.path.join('.', 'datasets', 'faces', 'waldo_big_face')
 ####################
 
-## train waldo classifier
+## train classifier
 feats = []
 labels = []
 
-def update_features(feats, labels, path, label, range=None):
+def update_features(path, label, range=None):
     images = os.listdir(path)
+
     if range is not None:
         images = images[:range]
+
     for image in images:
         if image == '.DS_Store': # Mac burden
             continue
@@ -34,35 +36,38 @@ def update_features(feats, labels, path, label, range=None):
         feats.append(fd)
         labels.append(label)
 
-update_features(feats, labels, WALDO_PATH, 1)
-update_features(feats, labels, WALDO_BIG_FACE_PATH, 1)
-update_features(feats, labels, OTHER_FACE_PATH, 0, 50)
-# update_features(feats, labels, OTHER_NON_FACE_PATH, other_non_face_images[0:13], 0)
+### Change the following code to change the data used to train the classifier
+update_features(WALDO_PATH, 1)
+update_features(WALDO_BIG_FACE_PATH, 1)
+update_features(OTHER_FACE_PATH, 0, 50)
+update_features(OTHER_NON_FACE_PATH, 0, 45)
+#############################################################################
 
 svc_linear = SVC(kernel="linear")
 svc_linear.fit(feats, labels)
 
 # TODO: replace with pickle save model
-test_img = cv2.imread('000.jpg')
-test_img = test_img[3000:4500, 8000:]
+test_img = cv2.imread('007.jpg')
+# test_img = test_img[3000:4500, 8000:]
 
 img_list, coord_list = detect_stripes(test_img)
 
 to_erase = copy.deepcopy(test_img)
-
-preds = []
+window_h, window_w = 128, 128
 for img, coord in zip(img_list, coord_list):
-    feature, _ = get_hog_feature(image=img)
-    prediction = svc_linear.predict([feature])[0]
-    preds.append(prediction)
-    if prediction == 1:
-        print(coord)
-        to_erase[coord[0]:coord[0]+128, coord[1]:coord[1]+128] *= 0
+    H, W, _ = img.shape
+    step_size = 20
+    for h in range(0, H - window_h, step_size):
+        for w in range(0, W- window_w, step_size):
+            window = img[h:h+window_h, w:w+window_w]
+            feature, _ = get_hog_feature(image=window)
+            prediction = svc_linear.predict([feature])[0]
+
+            if prediction == 1:
+                print(coord, h, w)
+                actual_h = h+coord[0]
+                actual_w = w+coord[1]
+                to_erase[actual_h:actual_h+window_h, actual_w:actual_w+window_w] *= 0
 
 plt.imshow(to_erase)
 plt.show()
-
-print(len(coord_list), preds)
-print(coord_list)
-
-# slide(test_img, 128, 128, svc_linear)
