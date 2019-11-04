@@ -88,6 +88,9 @@ def find_shirt(rgb, red_img, white_img):
         return True
 
 
+# takes in img in BGR color space
+# returns list of coordinates and images of possible waldo locations.
+# note that list of images returned are also in BGR
 def detect_stripes(img):
 
     og = img
@@ -146,6 +149,7 @@ def detect_stripes(img):
     sw_w = 250
 
     image_list = []
+    coordinate_list = []
 
     for i in range(0, height-sw_h, sw_h):
         for j in range(0, width-sw_w, sw_w):
@@ -155,12 +159,14 @@ def detect_stripes(img):
                 if coordinates[k][0] >= i and coordinates[k][0] <= i + sw_h\
                         and coordinates[k][1] >= j and coordinates[k][1] <= j + sw_w:
                     waldo_detected = True
+                    break
 
             if waldo_detected:
-                image_list.append([i,j])
+                image_list.append(og[i:i+sw_h, j:j+sw_w])
+                coordinate_list.append([i,j])
 
+    return image_list, coordinate_list
 
-    return image_list
 
 
 
