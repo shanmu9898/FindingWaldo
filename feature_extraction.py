@@ -3,6 +3,7 @@ from skimage.feature import hog
 
 def get_hog_feature(path=None, image=None, img_height=128, img_width=128, orientations=9, pixels_per_cell=(8, 8), 
                     cells_per_block=(2, 2), multichannel=True):
+
     if path is not None:
         img = cv2.imread(path)
 
