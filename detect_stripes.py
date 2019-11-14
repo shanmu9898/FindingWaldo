@@ -171,8 +171,8 @@ def detect_stripes(img):
     imshow(toErase)
     show()
 
-    sw_h = 250
-    sw_w = 250
+    sw_h = 200
+    sw_w = 200
 
     image_list = []
     coordinate_list = []

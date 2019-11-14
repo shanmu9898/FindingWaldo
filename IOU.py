@@ -11,8 +11,6 @@ def IoU(bbox1, bbox2):
     """
     x1, y1, w1, h1 = bbox1
     x2, y2, w2, h2 = bbox2
-    score = 0
-    ### YOUR CODE HERE
 
     yTop = max(y1, y2)
     yBottom = min(y1 + h1, y2 + h2)
@@ -24,9 +22,6 @@ def IoU(bbox1, bbox2):
     area1 = w1 * h1
     area2 = w2 * h2
     score = intersection_area / float(area1 + area2 - intersection_area)
-
-
-    ### END YOUR CODE
 
     return score
 
