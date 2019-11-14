@@ -23,7 +23,7 @@ This will create `../datesets/extracted_images/` directory.
 
 **visualize_hog_img.py**
 
-This is not mentioned in the report. The purpose of this script is to visualise hog features of the training images. This script will write into the `hog` sub-directory in this directory.
+This is not mentioned in the report. The purpose of this script is to visualise hog features of the training images. This script will write into the `hog` sub-directory in this directory (currently there are already some images inside).
 
 ```shell
 $python visualize_hog_img.py -p {path to directories of images}
