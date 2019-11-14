@@ -4,8 +4,8 @@ from detect_stripes import detect_stripes
 import cv2
 import os
 
-window_h = 120
-window_w = 100
+window_h = 140
+window_w = 140
 classfiers = train('/Users/Bumblebee/Desktop/Y4S1/CS4243/GroupProjects/FindingWaldo/datasets/faces', window_h,
                    window_w)
 

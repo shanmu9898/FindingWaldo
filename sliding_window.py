@@ -65,20 +65,26 @@ def slideMultiple(imageName, img, coordinates, window_h, window_w, classifier):
                 features, hog_image = hog(window, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                           visualize=True, multichannel=False)
 
-                prediction = classifier.predict([features])[0]
-                prediction_prob = classifier.predict_proba([features])[0]
+                prediction = 3
+                prediction_prob = [0,0,0,0]
+                if len(features) == 5832:
+                    prediction = classifier.predict([features])[0]
+                    prediction_prob = classifier.predict_proba([features])[0]
+                else:
+                    prediction = 3
 
-                if prediction_prob[0] > 0.7:
-                    write_file("./baseline/waldo.txt", imageName, prediction_prob[0], i, j, i + window_h, j + window_w)
-                    toErase[i:i+window_h, j:j+window_w] *= 0
-
-                if prediction_prob[1] > 1:
-                    write_file("./baseline/wenda.txt", imageName, prediction_prob[1], i, j, i + window_h, j + window_w)
-                    toErase[i:i + window_h, j:j + window_w] *= 0
-
-                if prediction_prob[2] > 1:
-                    write_file("./baseline/wizard.txt", imageName, prediction_prob[2], i, j, i + window_h, j + window_w)
-                    toErase[i:i + window_h, j:j + window_w] *= 0
+                if prediction == 0:
+                    if prediction_prob[0] > 0.7:
+                        write_file("./baseline/waldo.txt", imageName, prediction_prob[0], i, j, i + window_h, j + window_w)
+                        toErase[i:i+window_h, j:j+window_w] *= 0
+                elif prediction == 1:
+                    if prediction_prob[1] > 0.7:
+                        write_file("./baseline/wenda.txt", imageName, prediction_prob[1], i, j, i + window_h, j + window_w)
+                        toErase[i:i + window_h, j:j + window_w] *= 0
+                elif prediction == 2:
+                    if prediction_prob[2] > 0.7:
+                        write_file("./baseline/wizard.txt", imageName, prediction_prob[2], i, j, i + window_h, j + window_w)
+                        toErase[i:i + window_h, j:j + window_w] *= 0
 
     # plt.imshow(toErase)
     # plt.show()

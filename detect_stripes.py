@@ -168,8 +168,8 @@ def detect_stripes(img):
     print("total number of segments:", num_y * num_x)
     print("number of segments remaining:", len(coordinates))
 
-    imshow(toErase)
-    show()
+    # imshow(toErase)
+    # show()
 
     sw_h = 200
     sw_w = 200

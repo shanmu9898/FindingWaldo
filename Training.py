@@ -38,7 +38,7 @@ def train(path, height, width):
                                       visualize=True, multichannel=False)
 
             data.append(features)
-            labels.append(1)
+            labels.append(0)
 
     print("Processing Wenda for training")
     for (i, wenda_path) in enumerate(wenda_paths):  # load training image
@@ -57,7 +57,7 @@ def train(path, height, width):
                                       visualize=True, multichannel=False)
 
             data.append(features)
-            labels.append(2)
+            labels.append(1)
 
     print("Processing Wizard for training")
     for (i, wizard_path) in enumerate(wizard_paths):  # load training image
@@ -75,7 +75,7 @@ def train(path, height, width):
             features, hog_image = hog(train_image, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                       visualize=True, multichannel=False)
             data.append(features)
-            labels.append(3)
+            labels.append(2)
 
     print("Processing Negative examples for training")
     for (i, neg_path) in enumerate(neg_paths):  # load training image
@@ -93,7 +93,7 @@ def train(path, height, width):
             features, hog_image = hog(train_image, orientations=18, pixels_per_cell=(16, 16), cells_per_block=(3, 3),
                                       visualize=True, multichannel=False)
             data.append(features)
-            labels.append(4)
+            labels.append(3)
 
     print("1/2: Training classifiers...")
     print("SVC classifier started")
