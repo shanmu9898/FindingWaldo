@@ -3,56 +3,50 @@ from cascade_detector import run_cascade
 from IOU import IoU
 import cv2
 import matplotlib.pyplot as plt
-import copy
+from write_file import write_file
+import glob
+import os
 
 
-img = cv2.imread("C:\\Users\\Lawrence\\Dropbox\\Sem7\\CS4243\\project\\CS4243-Project\\datasets\\JPEGImages\\000.jpg")
+paths = glob.glob(os.path.join(".", "datasets", "Val", "**.jpg"))
 
-height, width = img.shape[0], img.shape[1]
+for path in paths:
+    img = cv2.imread(path)
 
-# get potential positions of waldo from detect stripes
-image_list, stripe_coordinates = detect_stripes(img)
+    img_name = path[-7:-4]
 
-# get predictions of waldo's faces from cascade
-cascade_coordinates = run_cascade(img)
+    height, width = img.shape[0], img.shape[1]
 
-waldo_coordinates = []
+    # get potential positions of waldo from detect stripes
+    image_list, stripe_coordinates = detect_stripes(img)
 
-for cc in cascade_coordinates:
-    # stripe shirts are always in the region below waldo's face
+    # get predictions of waldo's faces from cascade
+    cascade_coordinates = run_cascade(img)
 
-    x, y, w, h = cc
-    cascade_img = img[y:y+h, x:x+w]
+    waldo_coordinates = []
 
-    for image, coordinate in zip(image_list, stripe_coordinates):
+    for cc in cascade_coordinates:
+        # stripe shirts are always in the region below waldo's face
 
-        dy, dx = coordinate
-        if IoU(cc, (dx, dy, 200, 200)) > 0:
-            print("found")
+        x, y, w, h = cc
+        cascade_img = img[y:y+h, x:x+w]
 
-            if x + 100 >= width or y + 250 >= height:
-                continue
+        for image, coordinate in zip(image_list, stripe_coordinates):
 
-            waldo_coordinates.append([x, y, 100, 250])
+            dy, dx = coordinate
+            if IoU(cc, (dx, dy, 200, 200)) > 0:
+                print("found")
 
+                if x + 100 >= width or y + 250 >= height:
+                    continue
 
-waldo_final_coordinates = copy.deepcopy(waldo_coordinates)
-# remove duplicate coordinates
-for i in range(len(waldo_coordinates) - 1):
+                waldo_coordinates.append([x, y, 100, 250])
 
-    coord = waldo_coordinates[i]
-    is_dup = False
-
-    for j in range(i+1, len(waldo_coordinates)):
-
-        coord2 = waldo_coordinates[j]
-
-        if IoU(coord, coord2) > 0:
-            waldo_final_coordinates.remove(coord)
+    for coord in waldo_coordinates:
+        x, y, w, h = coord
+        write_file(os.path.join(".", "baseline", "waldo.txt"), img_name, 1, x, y, x+w, y+h)
 
 
-for coord in waldo_final_coordinates:
-    x, y, w, h = coord
-    plt.imshow(img[y:y+h, x:x+w])
-    plt.show()
+
+
 
