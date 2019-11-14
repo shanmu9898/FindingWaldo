@@ -7,6 +7,7 @@ from skimage.feature import hog
 import copy
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from write_file import write_file
 
 from feature_extraction import get_hog_feature
 
@@ -45,21 +46,19 @@ def slide(img, window_h, window_w, classifier):
     return coordinates
 
 
-def slideMultiple(img, coordinates, window_h, window_w, classifier):
+def slideMultiple(imageName, img, coordinates, window_h, window_w, classifier):
     toErase = copy.deepcopy(img)
     counter = 1
     for coordinate in coordinates:
-        print("Cordinate number " + str(counter))
         counter = counter + 1
         height, width = 250, 250
 
         step_size = 20
-        print("Coordinate for loop is " + str(coordinate))
         x,y = coordinate[0], coordinate[1]
 
+
+
         for i in range(x, x + height - window_h, step_size):
-            if(i % 100 == 0):
-                print(i)
             for j in range(y, y + width - window_w, step_size):
                 window = img[i:i+window_h, j:j+window_w]
 
@@ -67,12 +66,22 @@ def slideMultiple(img, coordinates, window_h, window_w, classifier):
                                           visualize=True, multichannel=False)
 
                 prediction = classifier.predict([features])[0]
+                prediction_prob = classifier.predict_proba([features])[0]
 
-                if prediction == 1:
+                if prediction_prob[0] > 0.7:
+                    write_file("./baseline/waldo.txt", imageName, prediction_prob[0], i, j, i + window_h, j + window_w)
                     toErase[i:i+window_h, j:j+window_w] *= 0
 
-    plt.imshow(toErase)
-    plt.show()
+                if prediction_prob[1] > 1:
+                    write_file("./baseline/wenda.txt", imageName, prediction_prob[1], i, j, i + window_h, j + window_w)
+                    toErase[i:i + window_h, j:j + window_w] *= 0
+
+                if prediction_prob[2] > 1:
+                    write_file("./baseline/wizard.txt", imageName, prediction_prob[2], i, j, i + window_h, j + window_w)
+                    toErase[i:i + window_h, j:j + window_w] *= 0
+
+    # plt.imshow(toErase)
+    # plt.show()
 
 
 
