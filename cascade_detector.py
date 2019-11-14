@@ -3,15 +3,15 @@ import os
 import matplotlib.pyplot as plt
 
 
-# requires img in grayscale
+# requires img in bgr
 # returns coordinates of window in the format x, y, w, h
 def run_cascade(img):
 
-    cascade_path = os.path.join(".", "cascade", "cascade.xml")
+    print("running cascade detector...")
+    cascade_path = os.path.join(".", "cascade", "waldo_cascade.xml")
 
     waldo_cascade = cv2.CascadeClassifier(cascade_path)
 
-    img = cv2.imread("C:\\Users\\Lawrence\\Dropbox\\Sem7\\CS4243\\project\\CS4243-Project\\datasets\\JPEGImages\\000.jpg")
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     count = 0
