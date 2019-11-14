@@ -6,6 +6,7 @@ import os
 
 # sift = cv2.xfeatures2d.SIFT_create()
 sift = cv2.KAZE_create()
+
 def get_image_paths(path):
     image_paths = []
     image_names = os.listdir(path)
@@ -36,7 +37,7 @@ def extract_feature_vector(img, vector_size=16):
     return feature_vector
 
 
-img1 = cv2.imread('008_0_0.jpg')
+img1 = cv2.imread('./datasets/specs')
 feat1 = extract_feature_vector(img1)
 
 images = get_image_paths('./datasets/faces/neg')
