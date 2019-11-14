@@ -8,12 +8,19 @@ def filter_for_white(img):
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    # for first image
-    w00 = (175, 120, 255)
+    w00 = (70, 50, 255)
     w01 = (0, 0, 200)
     mask0 = cv2.inRange(hsv_img, w01, w00)
 
-    mask_final = mask0
+    w00 = (175, 90, 255)
+    w01 = (150, 30, 200)
+    mask1 = cv2.inRange(hsv_img, w01, w00)
+
+    w00 = (12, 120, 255)
+    w01 = (0, 40, 240)
+    mask2 = cv2.inRange(hsv_img, w01, w00)
+
+    mask_final = mask0 + mask1 + mask2
 
     result = cv2.bitwise_and(rgb_img, rgb_img, mask=mask_final)
 
@@ -34,8 +41,6 @@ def filter_for_red(img):
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    # imshow(hsv_img)
-    # show()
     lower_red0 = (0, 130, 190)
     lower_red1 = (5, 255, 255)
     mask = cv2.inRange(hsv_img, lower_red0, lower_red1)
@@ -84,7 +89,28 @@ def find_shirt(rgb, red_img, white_img):
     up_sum = np.sum(np.reshape(result, (-1)))
     down_sum = np.sum(np.reshape(result2, (-1)))
 
-    if min(up_sum, down_sum) > max(up_sum, down_sum) / 3:
+    sum_up_down = up_sum + down_sum
+
+    min_sum = 10
+    ############################################################################################################################
+    # shift left and right
+    translation_matrix = np.float32([[1, 0, -5], [0, 1, 0]])
+    shifted_red_left = cv2.warpAffine(red_img, translation_matrix, (red_img.shape[1], red_img.shape[0]))
+
+    translation_matrix = np.float32([[1, 0, 5], [0, 1, 0]])
+    shifted_red_right = cv2.warpAffine(red_img, translation_matrix, (red_img.shape[1], red_img.shape[0]))
+
+    result = cv2.bitwise_and(white_img, white_img, mask=shifted_red_left)
+    result2 = cv2.bitwise_and(white_img, white_img, mask=shifted_red_right)
+
+    overall_result = result + result2
+
+    sum_left_right = np.sum(np.reshape(overall_result, (-1)))
+    ############################################################################################################################
+
+
+    if min(up_sum, down_sum) > max(up_sum, down_sum) / 3 and up_sum > min_sum and down_sum > min_sum\
+            and sum_left_right < sum_up_down / 2:
         return True
 
 
@@ -109,7 +135,7 @@ def detect_stripes(img):
 
     # dimension of window
 
-    window_h = 100
+    window_h = 50
     window_w = 50
 
     # number of small boxes across x and y to obtain

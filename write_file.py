@@ -13,4 +13,4 @@ def write_file(file_path, img_name, score, xmin, ymin, xmax, ymax):
         append_write = 'w'
 
     with open(file_path, append_write) as f:
-        f.write(f'{img_name} {score} {xmin} {ymin} {xmax} {ymax}')
+        f.write(f'{img_name} {score} {xmin} {ymin} {xmax} {ymax}\n')
