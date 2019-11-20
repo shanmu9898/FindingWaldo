@@ -86,8 +86,8 @@ def slideMultiple(imageName, img, coordinates, window_h, window_w, classifier):
                         write_file("./baseline/wizard.txt", imageName, prediction_prob[2], i, j, i + window_h, j + window_w)
                         toErase[i:i + window_h, j:j + window_w] *= 0
 
-    # plt.imshow(toErase)
-    # plt.show()
+    plt.imshow(toErase)
+    plt.show()
 
 
 
