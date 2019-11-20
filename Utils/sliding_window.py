@@ -1,15 +1,11 @@
-import cv2
-import numpy as np
 import matplotlib.pyplot as plt
 
 # for hog-svm
 from skimage.feature import hog
 import copy
-from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
-from write_file import write_file
+from Utils.write_file import write_file
 
-from feature_extraction import get_hog_feature
+from Utils.feature_extraction import get_hog_feature
 
 def slide(img, window_h, window_w, classifier):
 

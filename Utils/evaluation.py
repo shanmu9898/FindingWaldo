@@ -5,7 +5,7 @@
 # @File    : evaluation.py
 # ====================================================
 
-from voc_eval import *
+from Utils.voc_eval import *
 
 detpath = 'baseline/{}.txt'
 annopath = 'datasets/Annotations/{}.xml'

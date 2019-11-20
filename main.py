@@ -1,6 +1,6 @@
-from Training import train
-from sliding_window import slideMultiple
-from detect_stripes import detect_stripes
+from Utils.Training import train
+from Utils.sliding_window import slideMultiple
+from Utils.detect_stripes import detect_stripes
 import cv2
 import os
 

@@ -1,13 +1,11 @@
 import os
-import numpy as np
 from sklearn.svm import SVC
 import cv2
 import copy
 import matplotlib.pyplot as plt
 
-from feature_extraction import get_hog_feature
-from sliding_window import slide # TODO: remove
-from detect_stripes import detect_stripes # TODO: remove
+from Utils.feature_extraction import get_hog_feature
+from Utils.detect_stripes import detect_stripes # TODO: remove
 
 ####################
 WALDO_PATH = os.path.join('.', 'datasets', 'faces', 'waldo')

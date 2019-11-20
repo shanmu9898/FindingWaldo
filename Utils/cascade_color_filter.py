@@ -1,9 +1,8 @@
-from detect_stripes import detect_stripes
-from cascade_detector import run_cascade
-from IOU import IoU
+from Utils.detect_stripes import detect_stripes
+from Utils.cascade_detector import run_cascade
+from Utils.IOU import IoU
 import cv2
-import matplotlib.pyplot as plt
-from write_file import write_file
+from Utils.write_file import write_file
 import glob
 import os
 
